@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      body {
+        padding: 0px;
+        margin: 0px;
+      }
+      div.background {
+        width: 100vw;
+        height: 100vh;
+      }
+      div.background h1, div.background input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        font-size: 5em;
+        width: auto;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+      }
+      div.background input {
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -80%);
+        background: transparent;
+        outline: none;
+        border: none;
+        border-bottom: 2px solid white;
+      }
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+    </style>
+    <script>
+      (window.isPrime = function(num) {
+        var sqrtN = Math.sqrt(num);
+        var prime = true;
+        var i = 2;
+        while (i <= sqrtN && prime) {
+          prime = (num % i !== 0);
+          i++;
+        }
+        return prime;
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="container" class="background">
+      <input id="query-number" type="number">
+      <h1 id="result-button"></h1>
+    </div>
+
+    <script>
+      function generate() {
+
+        var hexValues = ["4","5","6","7","8","9","a","b","c","d","e"];
+
+        function populate(a) {
+          for ( var i = 0; i < 6; i++ ) {
+            var x = Math.round( Math.random() * 10 );
+            var y = hexValues[x];
+            a += y;
+          }
+          return a;
+        }
+
+        var newColor1 = populate('#');
+        var newColor2 = populate('#');
+        var newColor3 = populate('#');
+        var angle = Math.round( Math.random() * 360 );
+
+        var gradient = "linear-gradient(" + angle + "deg, " + newColor1 + ", " + newColor2 + ", " + newColor3 + ")";
+
+        document.getElementById("container").style.background = gradient;
+      }
+
+      document.onload = generate();
+
+      function validate(value) {
+        document.getElementById("result-button").innerText = isPrime(value) ? 'Prime' : 'Composite';
+      }
+
+      (function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('num')) {
+          var value = urlParams.get('num');
+          document.getElementById("query-number").value = value;
+          validate(value)
+        }
+      })()
+
+      var input = document.getElementById("query-number");
+
+      // Execute a function when the user releases a key on the keyboard
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          generate()
+          validate(input.value)
+        }
+      })
+    </script>
+  </body>
+</html>
