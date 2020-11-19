@@ -46,9 +46,12 @@
     </style>
     <script>
       (window.isPrime = function(num) {
+	if (num <= 1) {
+	  return false;
+	}
         var sqrtN = Math.sqrt(num);
         var prime = true;
-        var i = 2;
+        var i = 2;	 
         while (i <= sqrtN && prime) {
           prime = (num % i !== 0);
           i++;
